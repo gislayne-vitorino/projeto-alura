@@ -56,4 +56,8 @@ public class NewCourseDTO {
     public void setInstructorEmail(String instructorEmail) {
         this.instructorEmail = instructorEmail;
     }
+    
+    public Course toModel() {
+    	return new Course(code, name, instructorEmail, description);
+    }
 }
