@@ -2,6 +2,7 @@ package br.com.alura.ProjetoAlura.course;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,8 @@ public class CourseController {
     public ResponseEntity createCourse(@Valid @RequestBody NewCourseDTO newCourseDTO) {
 
     	if(courseRepository.existsByCode(newCourseDTO.getCode())) {
-    			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    					.body(new ErrorItemDTO("code", "Código já cadastrado no sistema"));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new ErrorItemDTO("code", "Código já cadastrado no sistema"));
 		}
 		    		
         User user = userRepository.findByEmail(newCourseDTO.getInstructorEmail());
@@ -61,8 +62,21 @@ public class CourseController {
     @Transactional
     @PostMapping("/course/{code}/inactive")
     public ResponseEntity createCourse(@PathVariable("code") String courseCode) {
-        // TODO: Implementar a Questão 2 - Inativação de Curso aqui...
+		
+		Course course = courseRepository.findByCode(courseCode);
+		
+		if(Objects.isNull(course)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body(new ErrorItemDTO("code", "Curso não existe no sistema"));
+		}
+		
+        if (course.getCourseStatus() == CourseStatus.INACTIVE) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O curso já está inativo");
+        }
 
+        course.setCourseStatus(CourseStatus.INACTIVE);
+        course.setInactivationDate(LocalDateTime.now());
+		
         return ResponseEntity.ok().build();
     }
 

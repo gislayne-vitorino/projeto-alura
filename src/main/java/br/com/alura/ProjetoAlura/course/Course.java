@@ -18,8 +18,10 @@ public class Course {
     
     @Enumerated(EnumType.STRING)
     private CourseStatus courseStatus;
-    
-    private LocalDateTime inactivationDate;
+
+	private LocalDateTime inactivationDate;
+	
+	public Course() {}
 
     public Course(String code, String name, String instructorEmail, String description) {
         this.code = code;
@@ -52,5 +54,14 @@ public class Course {
     
 	public LocalDateTime getInactivationDate() {
 		return inactivationDate;
+	}
+	
+    public void setCourseStatus(CourseStatus courseStatus) {
+		this.courseStatus = courseStatus;
+	}
+
+
+	public void setInactivationDate(LocalDateTime inactivationDate) {
+		this.inactivationDate = inactivationDate;
 	}
 }
