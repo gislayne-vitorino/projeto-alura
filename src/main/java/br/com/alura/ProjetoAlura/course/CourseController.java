@@ -47,7 +47,7 @@ public class CourseController {
 					.body(new ErrorItemDTO("email", "Não há usuário com esse email cadastrado"));
         }
         
-        if(!Objects.equals(user.getRole().INSTRUCTOR, Role.INSTRUCTOR )) {
+        if(!Objects.equals(user.getRole(), Role.INSTRUCTOR )) {
         	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new ErrorItemDTO("email", "Usuário deve ser instrutor para cadastrar um curso"));
 
